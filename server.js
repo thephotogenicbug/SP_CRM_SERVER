@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const {v4 : uuidv4} = require('uuid')
 const uniqid = require('uniqid');
+const db = require('./models')
 
 // Middleware
 app.use(express.json());
@@ -54,22 +55,22 @@ app.post('/login', (req,res) =>{
 })
 
 // Post New Ticket
-app.post('/createticket', (req,res) =>{
-  var myservice = req.body.myservice;
-  var subservice = req.body.subservice;
-  var budget = req.body.budget;
-  var notes = req.body.notes;
-  var status = req.body.status;
-  var attachment = req.body.attachment;
-  var sql = "insert into createticket(myservice, subservice, budget, notes, status, attachment ) values('"+myservice+"', '"+subservice+"', '"+budget+"', '"+notes+"', '"+status+"', '"+attachment+"')";
-  mydatabase.query(sql, function(error, rows, fields){
-        if(error) throw error
-         res.status(201).json({
-           success: true,
-           message: "New Ticket Generated Successfully....!",
-         });
-      })
-})
+// app.post('/createticket', (req,res) =>{
+//   var myservice = req.body.myservice;
+//   var subservice = req.body.subservice;
+//   var budget = req.body.budget;
+//   var notes = req.body.notes;
+//   var status = req.body.status;
+//   var attachment = req.body.attachment;
+//   var sql = "insert into createticket(myservice, subservice, budget, notes, status, attachment ) values('"+myservice+"', '"+subservice+"', '"+budget+"', '"+notes+"', '"+status+"', '"+attachment+"')";
+//   mydatabase.query(sql, function(error, rows, fields){
+//         if(error) throw error
+//          res.status(201).json({
+//            success: true,
+//            message: "New Ticket Generated Successfully....!",
+//          });
+//       })
+// })
 // app.post('/newticket', (req,res) =>{
 //     var projectname = req.body.projectname;
 //     var date = req.body.date;
@@ -151,6 +152,14 @@ app.post('/clientprofile', function(req,res){
   })
 })
 
+// Routers
+const createTicketRouter = require('./routes/createTickets')
+app.use("/createticket", createTicketRouter);
+
+db.sequelize.sync().then( () =>{
 app.listen(process.env.PORT, () => {
   console.log(`Server is working on http://localhost:${process.env.PORT}`);
 });
+})
+
+
