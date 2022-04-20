@@ -93,24 +93,24 @@ app.post('/login', (req,res) =>{
 // })
 
 // Get Ticket
-app.get('/getallticket', (req,res) =>{
-  var sql = "select * from createticket order by id desc";
-  mydatabase.query(sql, function(error, rows, fields){
-    if(error) throw error
-     res.send(rows)
-     res.end()
-  })
-})
+// app.get('/getallticket', (req,res) =>{
+//   var sql = "select * from createticket order by id desc";
+//   mydatabase.query(sql, function(error, rows, fields){
+//     if(error) throw error
+//      res.send(rows)
+//      res.end()
+//   })
+// })
 
 // Get Ticket By Id
-app.post('/getticketinfo', (req,res) =>{
-  var id = req.body.id;
-  mydatabase.query("select * from createticket where id='"+id+"'", function(error, rows, fields){
-    if(error) throw error
-    res.send(JSON.stringify(rows));
-    res.end
-  })
-})
+// app.post('/getticketinfo', (req,res) =>{
+//   var id = req.body.id;
+//   mydatabase.query("select * from createticket where id='"+id+"'", function(error, rows, fields){
+//     if(error) throw error
+//     res.send(JSON.stringify(rows));
+//     res.end
+//   })
+// })
 
 app.post('/updateticket', function(req,res) {
   var myservice = req.body.myservice;
@@ -155,6 +155,8 @@ app.post('/clientprofile', function(req,res){
 // Routers
 const createTicketRouter = require('./routes/createTickets')
 app.use("/createticket", createTicketRouter);
+const userRouter = require("./routes/Users");
+app.use("/auth", userRouter);
 
 db.sequelize.sync().then( () =>{
 app.listen(process.env.PORT, () => {

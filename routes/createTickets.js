@@ -1,12 +1,22 @@
-const express = require('express');
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
+const { CreateTickets } = require("../models");
 
+router.get("/", async (req, res) => {
+  const listOfTickets = await CreateTickets.findAll();
+  res.json(listOfTickets);
+});
 
-router.get('/', (req, res) =>{
-  res.send('Hello world')
-})
+router.post("/", async (req, res) => {
+  const createticket = req.body;
+  await CreateTickets.create(createticket);
+  res.json(createticket);
+});
 
-router.post('/')
+router.get("/byId/:id", async (req, res) => {
+  const id = req.params.id;
+  const ticket = await CreateTickets.findByPk(id);
+  res.json(ticket);
+});
 
-
-module.exports = router
+module.exports = router;
